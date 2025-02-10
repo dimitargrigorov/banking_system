@@ -36,12 +36,15 @@ def closeAccount(bank_name, user_number):
 
 
 def transfer_balance_to_another_bank(current_bank_name, new_bank_name, user_number):
+    if new_bank_name == current_bank_name:
+        return
     try:
-        bank = Bank.objects.get(bank_name = current_bank_name)
-        current_account = Account.objects.get(bank = bank, user_number = user_number)
+        current_bank = Bank.objects.get(bank_name = current_bank_name)
+        new_bank = Bank.objects.get(bank_name = new_bank_name)
+        current_account = Account.objects.get(bank = current_bank, user_number = user_number)
         owner = current_account.owner
         balance = current_account.balance
-        new_account = Account(owner = owner, bank = bank, balance = balance, user_number = user_number)
+        new_account = Account(owner = owner, bank = new_bank, balance = balance, user_number = user_number)
         current_account.delete()
         new_account.save()
     except Account.DoesNotExist:
@@ -63,5 +66,4 @@ def check_balance(user_number, bank_name):
 
 
 
-
-createAccount("PostBank", "Ca", 123456, 20, 500)
+transfer_balance_to_another_bank("PostBank", "UniCredit", 1864646000000)
