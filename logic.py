@@ -64,6 +64,11 @@ def check_balance(user_number, bank_name):
     except Bank.DoesNotExist:
         print(f"Банка с име {bank_name} не съществува")
 
+def create_bank(bank_name):
+    bank  = Bank(bank_name = bank_name)
+    bank.save()
 
+def send_check(bank_name, egn, uniq_code):
+    pass
 
-transfer_balance_to_another_bank("PostBank", "UniCredit", 1864646000000)
+create_bank("ViscaBank")

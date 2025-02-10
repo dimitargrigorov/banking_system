@@ -5,14 +5,15 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     egn = models.CharField(max_length=10, blank=True, null=True)
     age = models.PositiveIntegerField(blank=True, null=True)
-    role = models.CharField(max_length=20, choices=[('client', 'Client'), ('employee', 'Employee')], default='client')
+    role = models.CharField(max_length= 20, choices=[('client', 'Client'), ('employee', 'Employee'), ('third person', 'third person')], default='client')
     ROLE_CHOICES = [
         ('client', 'Клиент'),
         ('employee', 'Служител'),
+        ('third person', 'Трето лице')
     ]
 
     role = models.CharField(
-        max_length=10,
+        max_length=20,
         choices=ROLE_CHOICES,
         default='client',
     )
