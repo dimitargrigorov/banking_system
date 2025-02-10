@@ -7,16 +7,11 @@ class Bank(models.Model):
     def __str__(self):
         return self.bank_name
     
-    def add_bank(self, bank_name):
-        bank = Bank.objects.create(name=bank_name)
-        return bank
 
-
-    def check_balance(self, egn):
-        return self.bank_accounts[egn]
 
 
 class Account(models.Model):
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
+    owner = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    bank = models.ForeignKey(Bank, null=True, blank=True, on_delete=models.SET_NULL)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    user_number = models.IntegerField(default=0)
