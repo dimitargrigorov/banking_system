@@ -2,9 +2,14 @@
 
 {% block content %}
     <h2>Смяна на банката</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Смяна</button>
-    </form>
+    {% if user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Смяна</button>
+        </form>
+    {% else %}
+    <p>Трябва да сте влезли в профила си, за да направите промяна.</p>
+    <a href="{% url 'login' %}">Вход</a>
+    {% endif %}
 {% endblock %}

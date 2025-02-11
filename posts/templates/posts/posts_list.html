@@ -6,18 +6,14 @@
 
 {% block content %}
     <section>
-    <h1>Posts</h1>
+    <h1>Profile</h1>
 
-    {% for post in posts %}
-        <article class="post">
-            <h2>
-                <a href="{%  url 'posts:page' slug=post.slug %}">
-                    {{ post.title }}
-                </a>
-            </h2>
-            <p>{{ post.date }}</p>
-            <p>{{ post.body }}</p>
+        <article class="user">
+            <p><a>Username: </a>{{ user.username }}</p>
+            <p><a>Email: </a>{{ user.email }}</p>
+            <p><a>Egn: </a>{{ user.egn }}</p>
+            <p><a>Age: </a>{{ user.age }}</p>
+            <p><a>Role: </a>{{ user.role }}</p>
         </article>
-    {% endfor %}
 </section>
 {% endblock %}

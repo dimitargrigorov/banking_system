@@ -12,10 +12,16 @@ def create_bank(request):
     return render(request, 'bank_form.html', {'form': form})
 
 def open_account(request):
+    if not request.user.is_authenticated:
+        return redirect('users:login')
     if request.method == "POST":
         form = OpenForm(request.POST)
         if form.is_valid():
-            form.save()
+            bank = form.cleaned_data['bank']
+            balance = form.cleaned_data['balance']
+            user_number = id((bank, request.user))
+            account = Account(owner = request.user, bank = bank, balance = balance, user_number = user_number)
+            account.save()
     else:
         form = OpenForm()
 
@@ -23,6 +29,8 @@ def open_account(request):
 
 
 def close_account(request):
+    if not request.user.is_authenticated:
+        return redirect('users:login')
     if request.method == "POST":
         form = CloseForm(request.POST)
         if form.is_valid():
@@ -40,6 +48,8 @@ def close_account(request):
 
 
 def change_bank(request):
+    if not request.user.is_authenticated:
+        return redirect('users:login')
     if request.method == "POST":
         form = ChangeForm(request.POST)
         if form.is_valid():

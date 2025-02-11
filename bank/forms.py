@@ -10,7 +10,7 @@ class BankForm(forms.ModelForm):
 class OpenForm(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ['owner', 'bank', 'balance', 'user_number']
+        fields = ['bank', 'balance']
 
 
 class CloseForm(forms.ModelForm):
