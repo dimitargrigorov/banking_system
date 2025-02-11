@@ -70,5 +70,3 @@ def create_bank(bank_name):
 
 def send_check(bank_name, egn, uniq_code):
     pass
-
-create_bank("ViscaBank")
