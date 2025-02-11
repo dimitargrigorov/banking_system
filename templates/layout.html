@@ -36,7 +36,15 @@
             </a> |
             <a href="{% url 'bank:create_bank' %}">
                 <span role="img" aria-label="Create bank" title="Create bank">🏦</span>
-            </a>
+            </a> |
+            <a href="{% url 'bank:open_account' %}">
+                <span role="img" aria-label="Open account" title="Open account">open</span>
+            </a> |
+            <a href="{% url 'bank:close_account' %}">
+                <span role="img" aria-label="Close account" title="Close account">close</span>
+            </a> 
+
+
     </nav>
     <main>
         {% block content %}
