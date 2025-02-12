@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .forms import OpenForm, CloseForm, Account
-
+from posts.views import posts_list
 def open_account(request):
     if not request.user.is_authenticated:
         return redirect('users:login')
@@ -29,6 +29,7 @@ def close_account(request):
             try:
                 account = Account.objects.get(bank=bank, user_number=user_number)
                 account.delete()
+                return redirect('account:open_account')
             except Account.DoesNotExist:
                 form.add_error(None, "Акаунтът не е намерен.")
     else:

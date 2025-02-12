@@ -1,5 +1,4 @@
 from django.db import models
-from users.models import CustomUser
 
 
 class Bank(models.Model):
@@ -14,3 +13,5 @@ class Change(models.Model):
     current_bank_name = models.CharField(max_length=100)
     new_bank_name = models.CharField(max_length=100)      
     user_number = models.IntegerField()
+
+    

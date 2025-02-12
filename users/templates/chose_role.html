@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h2>Изберете роля</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" name="role" value="Клиент">Клиент</button>
+        <button type="submit" name="role" value="Служител">Служител</button>
+        <button type="submit" name="role" value="Трето лице">Трето лице</button>
+    </form>
+{% endblock %}

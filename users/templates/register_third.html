@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1>Register a New user</h1>
-    <form class="form-with-validation"action="/users/register/" method="post">
+    <form class="form-with-validation"action="/users/register_third_person/" method="post">
         {% csrf_token %}
          {{form}}
          <button class="form-submit">Submit</button>

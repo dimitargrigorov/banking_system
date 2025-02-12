@@ -27,15 +27,15 @@
             <form class="logout" action="{% url 'users:logout' %}" method="post">
                 {% csrf_token %} 
                 <button class="logout-button" aria-label="User Logout" title="User Logout">👋</button>
-            </form>
-            <a href="{% url 'users:register' %}">
-                <span role="img" aria-label="User Registration" title="User Registration">🚀</span>
-            </a> | 
+            </form>|
             <a href="{% url 'users:login' %}">
                 <span role="img" aria-label="User Login" title="User Login">🔏</span>
             </a> |
             <a href="{% url 'bank:create_bank' %}">
                 <span role="img" aria-label="Create bank" title="Create bank">🏦</span>
+            </a> |
+            <a href="{% url 'users:add_employee' %}">
+                <span role="img" aria-label="Add employee" title="Add employee">👮‍♂️</span>
             </a> |
             <a href="{% url 'account:open_account' %}">
                 <span role="img" aria-label="Open account" title="Open account">open</span>
@@ -45,6 +45,9 @@
             </a> |
             <a href="{% url 'bank:change_bank' %}">
                 <span role="img" aria-label="Change bank" title="Change bank">change</span>
+            </a> |
+            <a href="{% url 'users:choose_role' %}">
+                <span role="img" aria-label="Choose role" title="Choose role">role</span>
             </a> |
 
 
