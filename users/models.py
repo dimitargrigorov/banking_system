@@ -28,18 +28,6 @@ class CreateEmployee(models.Model):
     bank = models.ForeignKey(Bank, null=True, blank=True, on_delete=models.SET_NULL)
 
 
-class MessageFromUser(models.Model):
-    user_from = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True, related_name="sent_messages_from_user")
-    user_to = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True, blank=True, related_name="received_messages_from_employee")
-    message = models.CharField(max_length=300, blank=True, null=True)
-    bank = models.ForeignKey(Bank, null=True, blank=True, on_delete=models.SET_NULL)
-
-
-class MessageFromEmployee(models.Model):
-    user_from = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True, blank=True, related_name="sent_messages_from_employee")
-    user_to = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True,related_name="received_messages_from_user")
-    message = models.CharField(max_length=300, blank=True, null=True)
-    bank = models.ForeignKey(Bank, null=True, blank=True, on_delete=models.SET_NULL)
 
 
 

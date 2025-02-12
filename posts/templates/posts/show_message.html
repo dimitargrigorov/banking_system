@@ -1,33 +1,24 @@
 {% extends 'layout.html' %}
-<body>
-    <h1>Съобщения за {{ user.username }}</h1>
 
-    <!-- Проверка дали има съобщения -->
-    {% if messages %}
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Изпращач</th>
-                    <th>Дата на изпращане</th>
-                    <th>Съдържание на съобщението</th>
-                    <th>Банка</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Преглед на всяко съобщение -->
-                {% for message in messages %}
-                    <tr>
-                        <td>{{ message.user_from.username }}</td>
-                        <td>{{ message.timestamp }}</td>
-                        <td>{{ message.content }}</td>
-                        <td>{{ message.bank.name }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Няма съобщения за показване.</p>
-    {% endif %}
+{% block title %}
+    Posts
+{% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <section>
+    <h1>Съобщения</h1>
+
+    {% for message in messages %}
+        <p><a>{{ message.message }}</a></p>
+        <p><a>Данни за клиента: </a></p>
+        <p><a>username:   </a><a>{{ message.user_from.username}}</a></p>
+        <p><a>email:   </a><a>{{ message.user_from.email}}</a></p>
+        <p><a>age:   </a><a>{{ message.user_from.age}}</a></p>
+        <p><a>egn:   </a><a>{{ message.user_from.egn }}</a></p>
+        <p><a>role:   </a><a>{{ message.user_from.role }}</a></p>
+        <button type="submit" name="action" value="Одобри">Одобри</button>
+        <button type="submit" name="action" value="Откажи">Откажи</button>
+{% endfor %}
+</section>
+{% endblock %}
+
