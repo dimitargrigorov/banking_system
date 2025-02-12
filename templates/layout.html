@@ -15,13 +15,16 @@
 </head>
 <body>
     <nav>
-        <a href="/">
+        <a href="{% url 'posts:welcome' %}">
+            <span role="img" aria-label="Welcome" title="Welcome">🏠</span>
+        </a> | 
+        <a href="{% url 'posts:message' %}">
             <span role="img" aria-label="Мessage" title="Мessage">📰</span>
         </a> | 
         <a href="/about">
             <span role="img" aria-label="About" title="About">😀</span>
         </a> | 
-        <a href="{% url 'posts:list' %}">
+        <a href="{% url 'posts:profile' %}">
             <span role="img" aria-label="Profile" title="Profile">Profile</span>
         </a> |
             <form class="logout" action="{% url 'users:logout' %}" method="post">

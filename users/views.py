@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout,authenticate
 
 from .forms import CustomUserCreationForm,EmployeeCreationForm, CreateEmployeeForm
 
@@ -12,7 +12,7 @@ def register_user(request):
             user.role = 'Клиент'
             user.save()
             login(request, user)
-           # return redirect("posts:list")
+            return redirect("posts:welcome")
     else:
         form = CustomUserCreationForm()
     return render(request, "register_user.html", {"form": form})
@@ -26,7 +26,7 @@ def register_employee(request):
             user.role = 'Служител'
             user.save()
             login(request, user)
-            #return redirect("posts:posts_list")
+            return redirect("posts:welcome")
     else:
         form = EmployeeCreationForm()
     return render(request, "register.employee.html", {"form": form})
@@ -40,7 +40,7 @@ def register_third_person(request):
             user.role = 'Трето лице'
             user.save()
             login(request, user)
-            #return redirect("posts:posts_list")
+            return redirect("posts:welcome")
     else:
         form = CustomUserCreationForm()
     return render(request, "register_third.html", {"form": form})
@@ -50,18 +50,26 @@ def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid(): 
-            login(request, form.get_user())
-            return redirect("posts:posts_list")
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect("posts:welcome")
+            else:
+                form.add_error(None, "Невалидни данни за вход.")
 
     else: 
         form = AuthenticationForm()
+
     return render(request, "login.html", { "form": form })
 
 
 def logout_view(request):
     if request.method == "POST": 
         logout(request) 
-        return redirect("posts:posts_list")
+        return redirect("posts:welcome")
     
 
 def choose_role(request):

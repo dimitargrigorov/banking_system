@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser,Employee
+from .models import CustomUser,Employee,MessageFromUser
 from django.contrib.auth.admin import UserAdmin
 
 class CustomUserAdmin(UserAdmin):
@@ -8,3 +8,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Employee)
+admin.site.register(MessageFromUser)

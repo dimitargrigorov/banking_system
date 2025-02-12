@@ -1,16 +1,23 @@
 from django.shortcuts import render,redirect
 from .models import Post
-
+from users.models import MessageFromUser,MessageFromEmployee,Employee,CustomUser
 # Create your views here.
 
 
-def posts_list(request):
+def profile(request):
     if not request.user.is_authenticated:
         return redirect('users:login')
     user = request.user
-    return render(request, 'posts/posts_list.html', {'user': user})
+    return render(request, 'posts/profile.html', {'user': user})
 
 
-def post_page(request, slug):
-    post = Post.objects.get(slug=slug)
-    return render(request, 'posts/post_page.html', {'post': post})
+def show_message(request):
+    if not request.user.is_authenticated:
+        return redirect('users:login')
+    messages = MessageFromEmployee.objects.filter(user_to = request.user)
+    return render(request, 'posts/show_message.html', {'messages': messages})
+
+def welcome(request):
+    return render(request, 'posts/welcome.html')
+    
+    

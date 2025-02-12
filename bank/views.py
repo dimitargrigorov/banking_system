@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from .forms import BankForm,ChangeForm, Bank
 from account.models import Account
+from users.models import Employee, MessageFromUser
 
 def create_bank(request):
     if request.method == "POST":
@@ -29,8 +30,14 @@ def change_bank(request):
                 owner = current_account.owner
                 balance = current_account.balance
                 new_account = Account(owner = owner, bank = new_bank, balance = balance, user_number = user_number)
-                current_account.delete()
-                new_account.save()
+
+                user_from = request.user
+                employee = Employee.objects.filter(bank=new_bank, employment =False).first()
+                message = f"Клиент {user_from.username} желае да премести сметката от банка {current_bank_name} в банка {new_bank_name}."
+                message_to_send = MessageFromUser(user_from = user_from, user_to = employee, message = message, bank = bank)
+                message_to_send.save()
+                employee.employment = True
+
             except Account.DoesNotExist:
                 form.add_error(None, "Акаунтът не е намерен.")
             except Bank.DoesNotExist:
@@ -39,3 +46,14 @@ def change_bank(request):
         form = ChangeForm()
 
     return render(request, 'change.html', {'form': form})
+
+
+def create_employee(request):
+    if request.method == "POST":
+        form = BankForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = BankForm()
+
+    return render(request, 'bank_form.html', {'form': form})
