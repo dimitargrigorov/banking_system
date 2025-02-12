@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Posts
+{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Съобщения</h1>
+
+    {% for message in messages %}
+        <p><a>{{ message.message }}</a></p>
+        <p><a>Данни за служителя: </a></p>
+        <p><a>username: </a><a>{{ message.user_from.username }}</a></p>
+        <p><a>email: </a><a>{{ message.user_from.email }}</a></p>
+        <p><a>Вашият потребителски номер е:  </a><a>{{ message.user_number }}</a></p>
+    {% endfor %}
+</section>
+{% endblock %}

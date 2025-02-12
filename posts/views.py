@@ -14,12 +14,12 @@ def profile(request):
 def show_message(request):
     if not request.user.is_authenticated:
         return redirect('users:login')
-    if request.user.role is "Клиент" or request.user.role is "Трето лице":
+    if request.user.role == "Клиент" or request.user.role == "Трето лице":
         messages = MessageFromEmployee.objects.filter(user_to = request.user)
-        return render(request, 'posts/show_message.html', {'messages': messages})
+        return render(request, 'posts/user_message.html', {'messages': messages})
     else:
         messages = MessageFromUser.objects.filter(user_to = request.user)
-        return render(request, 'posts/show_message.html', {'messages': messages})
+        return render(request, 'posts/employee_message.html', {'messages': messages})
     
 
 def welcome(request):
@@ -41,6 +41,9 @@ def approve_account(request, message_id):
     if request.method == "POST":
         message = get_object_or_404(MessageFromUser, id=message_id)
         account = Account(owner=message.user_from, bank=message.bank, balance=message.balance, user_number=message.user_number)
+        content_message = f"Одобрено отваряне на сметка от служител {message.user_to}."
+        message_to_send = MessageFromEmployee(user_from = message.user_to, user_to =message.user_from, message=content_message, user_number=message.user_number)
+        message_to_send.save()
         account.save()
         message.delete()
         return redirect("posts:message")
