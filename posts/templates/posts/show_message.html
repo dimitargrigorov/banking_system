@@ -5,20 +5,28 @@
 {% endblock %}
 
 {% block content %}
-    <section>
+<section>
     <h1>Съобщения</h1>
 
     {% for message in messages %}
         <p><a>{{ message.message }}</a></p>
         <p><a>Данни за клиента: </a></p>
-        <p><a>username:   </a><a>{{ message.user_from.username}}</a></p>
-        <p><a>email:   </a><a>{{ message.user_from.email}}</a></p>
-        <p><a>age:   </a><a>{{ message.user_from.age}}</a></p>
-        <p><a>egn:   </a><a>{{ message.user_from.egn }}</a></p>
-        <p><a>role:   </a><a>{{ message.user_from.role }}</a></p>
-        <button type="submit" name="action" value="Одобри">Одобри</button>
-        <button type="submit" name="action" value="Откажи">Откажи</button>
-{% endfor %}
+        <p><a>username: </a><a>{{ message.user_from.username }}</a></p>
+        <p><a>email: </a><a>{{ message.user_from.email }}</a></p>
+        <p><a>age: </a><a>{{ message.user_from.age }}</a></p>
+        <p><a>egn: </a><a>{{ message.user_from.egn }}</a></p>
+        <p><a>role: </a><a>{{ message.user_from.role }}</a></p>
+
+        <form method="POST" action="{% url 'posts:approve_account' message.id %}">
+            {% csrf_token %}
+            <button type="submit" name="action" value="approve">Одобри</button>
+        </form>
+
+        <form method="POST" action="{% url 'posts:reject_account' message.id %}">
+            {% csrf_token %}
+            <button type="submit" name="action" value="reject">Откажи</button>
+        </form>
+
+    {% endfor %}
 </section>
 {% endblock %}
-
