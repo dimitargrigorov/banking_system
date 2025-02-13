@@ -11,7 +11,6 @@
         {% endblock %}
     </title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'js/main.js' %}" defer></script>
 </head>
 <body>
     <nav>
@@ -20,9 +19,6 @@
         </a> | 
         <a href="{% url 'posts:message' %}">
             <span role="img" aria-label="Мessage" title="Мessage">📰</span>
-        </a> | 
-        <a href="/about">
-            <span role="img" aria-label="About" title="About">😀</span>
         </a> | 
         <a href="{% url 'posts:profile' %}">
             <span role="img" aria-label="Profile" title="Profile">Profile</span>
