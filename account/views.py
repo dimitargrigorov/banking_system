@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .forms import OpenForm, CloseForm, Account,CheckForm,RedemForm
-from account.models import Employee, MessageFromUser,Check
+from account.models import Employee, MessageFromUser,Check,MessageFromThird
 from bank.forms import ChangeForm
 from bank.models import Bank
 
@@ -92,7 +92,10 @@ def send_check(request):
         form = CheckForm(request.POST)
         if form.is_valid():
             form.save()
-            
+            content_message = f"{request.user.username} ви изпраща чек на стойност {form.cleaned_data['value']}!"
+            message_to_send = MessageFromThird(user_from=request.user, user_to=form.cleaned_data['reciever'], message=content_message,uniq_code=form.cleaned_data['uniq_code'] )
+            message_to_send.save()
+            return redirect("posts:message")
     else:
         form = CheckForm()
 

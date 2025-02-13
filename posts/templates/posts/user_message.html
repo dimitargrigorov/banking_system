@@ -9,11 +9,20 @@
     <h1>Съобщения</h1>
 
     {% for message in messages %}
-        <p><a>{{ message.message }}</a></p>
-        <p><a>Данни за служителя: </a></p>
-        <p><a>username: </a><a>{{ message.user_from.username }}</a></p>
-        <p><a>email: </a><a>{{ message.user_from.email }}</a></p>
-        <p><a>Вашият потребителски номер е:  </a><a>{{ message.user_number }}</a></p>
+        {% if "Одобрено" in message.message or "Успешно" in message.message %}
+            <p><a>{{ message.message }}</a></p>
+            <p><a>Данни за служителя: </a></p>
+            <p><a>username: </a><a>{{ message.user_from.username }}</a></p>
+            <p><a>email: </a><a>{{ message.user_from.email }}</a></p>
+            <p><a>Вашият потребителски номер е:  </a><a>{{ message.user_number }}</a></p>
+        {% else %}
+            <p><a>{{ message.message }}</a></p>
+            <p><a>Данни за изпращача: </a></p>
+            <p><a>username: </a><a>{{ message.user_from.username }}</a></p>
+            <p><a>email: </a><a>{{ message.user_from.email }}</a></p>
+            <p><a>Уникалния код е:  </a><a>{{ message.uniq_code }}</a><a> отидете да осребрите чека! </a></p>
+        {% endif %}
+        
     {% endfor %}
 </section>
 {% endblock %}
