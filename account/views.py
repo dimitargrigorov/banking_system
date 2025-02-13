@@ -32,20 +32,19 @@ def close_account(request):
     if request.method == "POST":
         form = CloseForm(request.POST)
         if form.is_valid():
-            bank = form.cleaned_data['bank']
-            user_number = form.cleaned_data['user_number']
-            user_from = request.user
-            employee = Employee.objects.filter(bank=bank, employment =False).first()
-            message = f"Клиент {user_from.username} желае да затвори сметка."
-            message_to_send = MessageFromUser(user_from = user_from, user_to = employee, message = message, bank = bank)
-            message_to_send.save()
-            employee.employment = True
-            #try:
-            #    account = Account.objects.get(bank=bank, user_number=user_number)
-            #    account.delete()
-            #    return redirect('account:open_account')
-            #except Account.DoesNotExist:
-            #    form.add_error(None, "Акаунтът не е намерен.")
+            try:
+                bank = form.cleaned_data['bank']
+                user_number = form.cleaned_data['user_number']
+                user_from = request.user
+                account = Account.objects.get(bank=bank, user_number=user_number)
+                employee = Employee.objects.filter(bank=bank, employment =False).first()
+                message = f"Клиент {user_from.username} желае да затвори сметка."
+                message_to_send = MessageFromUser(user_from = user_from, user_to = employee, message = message, bank = bank, balance=account.balance, user_number=account.user_number)
+                message_to_send.save()
+                employee.employment = True
+                return redirect('account:open_account')
+            except Account.DoesNotExist:
+                form.add_error(None, "Акаунтът не е намерен.")
     else:
         form = CloseForm()
 
@@ -72,7 +71,7 @@ def change_bank(request):
                 user_from = request.user
                 employee = Employee.objects.filter(bank=new_bank, employment =False).first()
                 message = f"Клиент {user_from.username} желае да премести сметката от банка {current_bank_name} в банка {new_bank_name}."
-                message_to_send = MessageFromUser(user_from = user_from, user_to = employee, message = message, bank = bank)
+                message_to_send = MessageFromUser(user_from = user_from, user_to = employee, message = message, bank = new_bank,balance = balance,user_number = user_number)
                 message_to_send.save()
                 employee.employment = True
 

@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import Post
 from account.models import MessageFromUser,MessageFromEmployee,Employee,CustomUser,Account
-# Create your views here.
 
 
 def profile(request):
@@ -37,7 +36,7 @@ def chose_action(request):
         return render(request, 'show_message.html')
     
 
-def approve_account(request, message_id):
+def approve_open(request, message_id):
     if request.method == "POST":
         message = get_object_or_404(MessageFromUser, id=message_id)
         account = Account(owner=message.user_from, bank=message.bank, balance=message.balance, user_number=message.user_number)
@@ -51,11 +50,42 @@ def approve_account(request, message_id):
     return redirect("posts:message")
 
 
-def reject_account(request, message_id):
+def approve_close(request, message_id):
+    if request.method == "POST":
+        message = get_object_or_404(MessageFromUser, id=message_id)
+        account = Account.objects.get(user_number = message.user_number)
+        content_message = f"Успешно затвяряне на сметка, служител {message.user_to}."
+        message_to_send = MessageFromEmployee(user_from = message.user_to, user_to =message.user_from, message=content_message, user_number=message.user_number)
+        message_to_send.save()
+        account.delete()
+        message.delete()
+        return redirect("posts:message")
+
+    return redirect("posts:message")
+
+
+def reject(request, message_id):
     if request.method == "POST":
         message = get_object_or_404(MessageFromUser, id=message_id)
         message.delete()
         return redirect("posts:message")
     return redirect("posts:message")
+
+
+def approve_change(request, message_id):
+    if request.method == "POST":
+        message = get_object_or_404(MessageFromUser, id=message_id)
+        account = Account.objects.get(user_number = message.user_number)
+        content_message = f"Одобрена смяна на банката, служител {message.user_to}."
+        message_to_send = MessageFromEmployee(user_from = message.user_to, user_to =message.user_from, message=content_message, user_number=message.user_number)
+        new_account = Account(owner=message.user_from, bank=message.bank, balance=message.balance, user_number=message.user_number)
+        message_to_send.save()
+        account.delete()
+        new_account.save()
+        message.delete()
+        return redirect("posts:message")
+
+    return redirect("posts:message")
+
     
     

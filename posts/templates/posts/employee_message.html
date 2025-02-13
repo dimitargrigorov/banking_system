@@ -17,16 +17,43 @@
         <p><a>egn: </a><a>{{ message.user_from.egn }}</a></p>
         <p><a>role: </a><a>{{ message.user_from.role }}</a></p>
 
-        <form method="POST" action="{% url 'posts:approve_account' message.id %}">
-            {% csrf_token %}
-            <button type="submit" name="action" value="approve">Одобри</button>
-        </form>
+        {% if "желае да отвори сметка" in message.message %}
+            <form method="POST" action="{% url 'posts:approve_open' message.id %}">
+                {% csrf_token %}
+                <button type="submit" name="action" value="approve">Одобри</button>
+            </form>
 
-        <form method="POST" action="{% url 'posts:reject_account' message.id %}">
-            {% csrf_token %}
-            <button type="submit" name="action" value="reject">Откажи</button>
-        </form>
+            <form method="POST" action="{% url 'posts:reject' message.id %}">
+                {% csrf_token %}
+                <button type="submit" name="action" value="reject">Откажи</button>
+            </form>
+        {% endif %}
 
+        {% if "желае да затвори сметка" in message.message %}
+            <form method="POST" action="{% url 'posts:approve_close' message.id %}">
+                {% csrf_token %}
+                <button type="submit" name="action" value="approve">Одобри</button>
+            </form>
+
+            <form method="POST" action="{% url 'posts:reject' message.id %}">
+                {% csrf_token %}
+                <button type="submit" name="action" value="reject">Откажи</button>
+            </form>
+        {% endif %}
+
+        {% if "желае да премести сметката" in message.message %}
+            <form method="POST" action="{% url 'posts:approve_change' message.id %}">
+                {% csrf_token %}
+                <button type="submit" name="action" value="approve">Одобри</button>
+            </form>
+            <form method="POST" action="{% url 'posts:reject' message.id %}">
+                {% csrf_token %}
+                <button type="submit" name="action" value="reject">Откажи</button>
+            </form>
+        {% endif %}
+
+    {% empty %}
+        <p>Няма съобщения.</p>
     {% endfor %}
 </section>
 {% endblock %}
