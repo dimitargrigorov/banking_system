@@ -1,12 +1,12 @@
 from django.shortcuts import render,redirect
-from .forms import OpenForm, CloseForm, Account
-from account.models import Employee, MessageFromUser
+from .forms import OpenForm, CloseForm, Account,CheckForm,RedemForm
+from account.models import Employee, MessageFromUser,Check
 from bank.forms import ChangeForm
 from bank.models import Bank
 
 
 def open_account(request):
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated or request.user.role != 'Клиент':
         return redirect('users:login')
     if request.method == "POST":
         form = OpenForm(request.POST)
@@ -27,7 +27,7 @@ def open_account(request):
 
 
 def close_account(request):
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated or request.user.role != 'Клиент':
         return redirect('users:login')
     if request.method == "POST":
         form = CloseForm(request.POST)
@@ -52,7 +52,7 @@ def close_account(request):
 
 
 def change_bank(request):
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated or request.user.role != 'Клиент':
         return redirect('users:login')
     if request.method == "POST":
         form = ChangeForm(request.POST)
@@ -83,3 +83,38 @@ def change_bank(request):
         form = ChangeForm()
 
     return render(request, 'change.html', {'form': form})
+
+
+def send_check(request):
+    if not request.user.is_authenticated or request.user.role != 'Трето лице':
+        return redirect('users:login')
+    if request.method == "POST":
+        form = CheckForm(request.POST)
+        if form.is_valid():
+            form.save()
+            
+    else:
+        form = CheckForm()
+
+    return render(request, 'send_check.html', {'form': form})
+
+
+def redem_check(request):
+    if not request.user.is_authenticated or request.user.role != 'Клиент':
+        return redirect('users:login')
+    if request.method == "POST":
+        form = RedemForm(request.POST)
+        if form.is_valid():
+            reciever = form.cleaned_data['reciever']
+            uniq_code = form.cleaned_data['uniq_code']
+            check = Check.objects.get(reciever=reciever,uniq_code=uniq_code)
+            bank = check.bank
+            account = Account.objects.get(owner=reciever,bank=bank)
+            account.balance += check.value
+            account.save()
+            check.delete()
+            form.save()
+    else:
+        form = RedemForm()
+
+    return render(request, 'redem.html', {'form': form})

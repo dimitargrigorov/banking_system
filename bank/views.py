@@ -3,6 +3,8 @@ from .forms import BankForm,ChangeForm, Bank
 from account.models import Account
 
 def create_bank(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect('users:login')
     if request.method == "POST":
         form = BankForm(request.POST)
         if form.is_valid():
@@ -14,6 +16,8 @@ def create_bank(request):
 
 
 def create_employee(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect('users:login')
     if request.method == "POST":
         form = BankForm(request.POST)
         if form.is_valid():
