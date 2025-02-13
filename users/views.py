@@ -10,9 +10,14 @@ def register_user(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.role = 'Клиент'
+            user.set_password(form.cleaned_data["password1"])
             user.save()
-            login(request, user)
-            return redirect("posts:welcome")
+            user = authenticate(username=user.username, password=form.cleaned_data["password1"])
+            if user is not None:
+                login(request, user)
+                return redirect("posts:welcome")
+            else:
+                form.add_error(None, "Грешка при аутентикация. Опитайте отново.")
     else:
         form = CustomUserCreationForm()
     return render(request, "register_user.html", {"form": form})
@@ -20,13 +25,18 @@ def register_user(request):
 
 def register_employee(request):
     if request.method == "POST":
-        form = EmployeeCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.role = 'Служител'
+            user.set_password(form.cleaned_data["password1"])
             user.save()
-            login(request, user)
-            return redirect("posts:welcome")
+            user = authenticate(username=user.username, password=form.cleaned_data["password1"])
+            if user is not None:
+                login(request, user)
+                return redirect("posts:welcome")
+            else:
+                form.add_error(None, "Грешка при аутентикация. Опитайте отново.")
     else:
         form = EmployeeCreationForm()
     return render(request, "register.employee.html", {"form": form})
@@ -38,9 +48,14 @@ def register_third_person(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.role = 'Трето лице'
+            user.set_password(form.cleaned_data["password1"])
             user.save()
-            login(request, user)
-            return redirect("posts:welcome")
+            user = authenticate(username=user.username, password=form.cleaned_data["password1"])
+            if user is not None:
+                login(request, user)
+                return redirect("posts:welcome")
+            else:
+                form.add_error(None, "Грешка при аутентикация. Опитайте отново.")
     else:
         form = CustomUserCreationForm()
     return render(request, "register_third.html", {"form": form})
