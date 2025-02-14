@@ -88,6 +88,7 @@ def change_bank(request):
 
             except Account.DoesNotExist:
                 form.add_error(None, 'Акаунтът не е намерен.')
+                raise PermissionDenied
             except Bank.DoesNotExist:
                 form.add_error(None, f'Банка с име {current_bank_name} или {new_bank_name} не е намерена')
                 raise PermissionDenied

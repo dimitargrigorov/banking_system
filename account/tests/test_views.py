@@ -113,12 +113,6 @@ class TestChangeBank(TestCase):
             password='password123',
             role='Клиент'
         )
-        self.user = Employee.objects.create_user(
-            username='testemployee',
-            email='employee@gmail.com',
-            password='password2025',
-            role='Служител'
-        )
         self.bank1 = Bank.objects.create(bank_name='Bank1')
         self.bank2 = Bank.objects.create(bank_name='Bank2')
         self.account = Account.objects.create(
@@ -127,9 +121,16 @@ class TestChangeBank(TestCase):
             balance = 33.23,
             user_number = 3414151512
         )
+        self.employee = Employee.objects.create_user(
+            username='testemployee',
+            email='employee@gmail.com',
+            password='password2025',
+            role='Служител',
+            bank= self.bank2,
+            employment='False'
+        )
 
-
-    def test_change_bank_GET_authenticated(self):
+    def test_change_bank_authenticated(self):
         self.client.login(username=self.user.username, password='password123')
         response = self.client.get(reverse('account:change_bank'))
         self.assertEqual(response.status_code, 200)
@@ -152,6 +153,24 @@ class TestChangeBank(TestCase):
             'user_number':3414151512
         })
         self.assertEqual(response.status_code, 200)
+
+    def test_change_account_not_existed_account(self):
+        self.client.login(username=self.user.username, password='password123')
+        response = self.client.post(reverse('account:change_bank'), {
+            'current_bank_name': self.bank2.bank_name,
+            'new_bank_name': self.bank1.bank_name,
+            'user_number':3414151512
+        })
+        self.assertEqual(response.status_code, 403)
+
+    def test_change_bank_role_not_user(self):
+        self.client.login(username=self.employee.username, password='password2025')
+        response = self.client.get(reverse('account:change_bank'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('users:login'))
+
+    
+
     
 
 
