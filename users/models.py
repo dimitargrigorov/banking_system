@@ -3,14 +3,6 @@ from django.db import models
 from bank.models import Bank
 
 class CustomUser(AbstractUser):
-    def setUp(self):
-        self.user = CustomUser.objects.create_user(
-            username="testuser",
-            email="test@gmail.com",
-            password="password123",
-            role="Клиент"
-        )
-
     email = models.EmailField(unique=True)
     egn = models.CharField(max_length=10, blank=True, null=True)
     age = models.PositiveIntegerField(blank=True, null=True)

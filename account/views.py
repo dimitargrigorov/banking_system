@@ -3,6 +3,7 @@ from .forms import OpenForm, CloseForm, Account,CheckForm,RedemForm,BalanceForm
 from account.models import Employee, MessageFromUser,Check,MessageFromThird
 from bank.forms import ChangeForm
 from bank.models import Bank
+from django.core.exceptions import PermissionDenied
 
 
 def open_account(request):
@@ -89,6 +90,7 @@ def change_bank(request):
                 form.add_error(None, 'Акаунтът не е намерен.')
             except Bank.DoesNotExist:
                 form.add_error(None, f'Банка с име {current_bank_name} или {new_bank_name} не е намерена')
+                raise PermissionDenied
     else:
         form = ChangeForm()
 
