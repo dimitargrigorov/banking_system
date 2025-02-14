@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h2>Проверка на сметка</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if balance is not None %}
+        <h3>Състояние на сметката: {{ balance }}</h3>
+    {% endif %}
+{% endblock %}

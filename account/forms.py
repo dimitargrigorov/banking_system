@@ -24,3 +24,8 @@ class RedemForm(forms.ModelForm):
         model = Redem
         fields = ['reciever', 'uniq_code']
 
+class BalanceForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ['bank', 'user_number']
+
