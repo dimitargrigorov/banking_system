@@ -27,10 +27,10 @@ class MessageFromEmployee(models.Model):
 
 class Check(models.Model):
     sender = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True,related_name="send_scheck")
-    reciever = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True,related_name="recive_check")
-    uniq_code = models.CharField(max_length=5, blank=True, null=True)
-    value = models.DecimalField(max_digits=10, decimal_places=2, default=0.0, null=True, blank=True)
-    bank = models.ForeignKey(Bank, null=True, blank=True, on_delete=models.SET_NULL)
+    reciever = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=False,related_name="recive_check")
+    uniq_code = models.CharField(max_length=5, blank=False, null=True)
+    value = models.DecimalField(max_digits=10, decimal_places=2, default=0.0, null=True, blank=False)
+    bank = models.ForeignKey(Bank, null=True, blank=False, on_delete=models.SET_NULL)
 
 
 class MessageFromThird(models.Model):
@@ -42,8 +42,8 @@ class MessageFromThird(models.Model):
 
 
 class Redem(models.Model):
-    reciever = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=True,related_name="received_redemptions")
-    uniq_code = models.CharField(max_length=5, blank=True, null=True)
+    reciever = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=False,related_name="received_redemptions")
+    uniq_code = models.CharField(max_length=5, blank=False, null=True)
 
 
 

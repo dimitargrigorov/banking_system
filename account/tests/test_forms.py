@@ -12,6 +12,7 @@ class TestForms(TestCase):
             email='test@gmail.com',
             password='password123',
             role='Клиент'
+
         )
         self.bank = Bank.objects.create(
             bank_name='SuperBank'
@@ -40,3 +41,36 @@ class TestForms(TestCase):
             'user_number':self.account.user_number
         })
         self.assertTrue(form.is_valid())
+
+    def test_close_form_no_data(self):
+        form = CloseForm(data={})
+        self.assertFalse(form.is_valid())
+
+    def test_check_form_valid_data(self):
+        form = CheckForm(data={
+            'reciever':self.user,
+            'uniq_code':'xwer',
+            'value':23.5,
+            'bank':self.bank
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_check_form_no_data(self):
+        form = CheckForm(data={})
+        self.assertFalse(form.is_valid())
+    
+    def test_redem_form_valid_data(self):
+        form = RedemForm(data={
+            'reciever':self.user,
+            'uniq_code':'xwer',
+        })
+        self.assertTrue(form.is_valid())
+    
+    def test_redem_form_no_data(self):
+        form = RedemForm(data={})
+        self.assertFalse(form.is_valid())
+
+
+    
+
+    
