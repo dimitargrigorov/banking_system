@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from account.views import open_account, close_account, change_bank, send_check, redem_check
+from account.views import open_account, close_account, change_bank, send_check, redem_check,check_balance
 class TestUrls(SimpleTestCase):
     def test_open_account(self):
         url = reverse('account:open_account')
@@ -21,3 +21,7 @@ class TestUrls(SimpleTestCase):
     def test_redem_check(self):
         url = reverse('account:redem_check')
         self.assertEqual(resolve(url).func, redem_check)
+    
+    def test_check_balance(self):
+        url = reverse('account:check_balance')
+        self.assertEqual(resolve(url).func, check_balance)

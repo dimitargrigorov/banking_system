@@ -24,6 +24,7 @@ def open_account(request):
                 message_to_send = MessageFromUser(user_from = user_from, user_to = employee, message = message, bank = bank, balance = balance, user_number = user_number)
                 message_to_send.save()
                 employee.employment = True
+                employee.save()
             else:
                 form.add_error(None, f'Вече притежавате акаунт в {bank.bank_name}! ' )
                 raise AssertionError
@@ -50,6 +51,7 @@ def close_account(request):
                 message_to_send = MessageFromUser(user_from = user_from, user_to = employee, message = message, bank = bank, balance=account.balance, user_number=account.user_number)
                 message_to_send.save()
                 employee.employment = True
+                employee.save()
                 return redirect('account:open_account')
             except Account.DoesNotExist:
                 form.add_error(None, 'Акаунтът не е намерен или вече е изтрит!')
@@ -85,7 +87,7 @@ def change_bank(request):
                 message_to_send = MessageFromUser(user_from = user_from, user_to = employee, message = message, bank = new_bank,balance = balance,user_number = user_number)
                 message_to_send.save()
                 employee.employment = True
-
+                employee.save()
             except Account.DoesNotExist:
                 form.add_error(None, 'Акаунтът не е намерен.')
                 raise PermissionDenied
@@ -162,5 +164,3 @@ def check_balance(request):
         form = BalanceForm()
 
     return render(request, 'check_balance.html', {'form': form, 'balance':balance})
-    
-    

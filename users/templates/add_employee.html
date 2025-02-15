@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>User Login</h1>
+    <h1>Create employee</h1>
     <form class="form-with-validation" action="/users/add_employee/" method="post">
         {% csrf_token %}
         {{ form }}

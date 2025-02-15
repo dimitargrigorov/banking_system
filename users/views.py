@@ -25,7 +25,7 @@ def register_user(request):
 
 def register_employee(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = EmployeeCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.role = 'Служител'
@@ -101,7 +101,6 @@ def choose_role(request):
     else:
         return render(request, 'chose_role.html')
     
-
 def add_employee(request):
     if request.method == "POST":
         form = CreateEmployeeForm(request.POST)
@@ -109,7 +108,7 @@ def add_employee(request):
             employee = form.cleaned_data['employee']
             employee.bank = form.cleaned_data['bank']
             employee.save()
-           # return redirect("posts:list")
+            return redirect("posts:message")
     else:
         form = CreateEmployeeForm()
     return render(request, "add_employee.html", {"form": form})

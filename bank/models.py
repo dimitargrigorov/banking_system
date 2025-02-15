@@ -1,9 +1,7 @@
 from django.db import models
 
-
 class Bank(models.Model):
     bank_name = models.CharField(max_length=75)
-    
 
     def __str__(self):
         return self.bank_name

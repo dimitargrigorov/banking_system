@@ -1,5 +1,5 @@
 from django.test import TestCase
-from account.forms import OpenForm, CloseForm, CheckForm, RedemForm
+from account.forms import OpenForm, CloseForm, CheckForm, RedemForm,BalanceForm
 from bank.models import Bank
 from account.models import Account
 from users.models import CustomUser
@@ -37,7 +37,7 @@ class TestForms(TestCase):
     
     def test_close_form_valid_data(self):
         form = CloseForm(data={
-            'bank': self.account.bank,
+            'bank': self.account.bank.pk,
             'user_number':self.account.user_number
         })
         self.assertTrue(form.is_valid())
@@ -48,7 +48,7 @@ class TestForms(TestCase):
 
     def test_check_form_valid_data(self):
         form = CheckForm(data={
-            'reciever':self.user,
+            'reciever':self.user.pk,
             'uniq_code':'xwer',
             'value':23.5,
             'bank':self.bank
@@ -61,7 +61,7 @@ class TestForms(TestCase):
     
     def test_redem_form_valid_data(self):
         form = RedemForm(data={
-            'reciever':self.user,
+            'reciever':self.user.pk,
             'uniq_code':'xwer',
         })
         self.assertTrue(form.is_valid())
@@ -70,7 +70,13 @@ class TestForms(TestCase):
         form = RedemForm(data={})
         self.assertFalse(form.is_valid())
 
-
+    def test_balance_form_valid_data(self):
+        form = BalanceForm(data={
+            'bank':self.account.bank.pk,
+            'user_number':self.account.user_number
+        })
+        self.assertTrue(form.is_valid())
     
-
-    
+    def test_balance_form_no_data(self):
+        form = BalanceForm(data={})
+        self.assertFalse(form.is_valid())

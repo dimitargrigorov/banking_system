@@ -26,13 +26,3 @@ class Employee(CustomUser):
 class CreateEmployee(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True, blank=True)
     bank = models.ForeignKey(Bank, null=True, blank=True, on_delete=models.SET_NULL)
-
-
-
-
-
-
-
-
-
-

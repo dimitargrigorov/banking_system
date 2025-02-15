@@ -46,6 +46,8 @@ def approve_open(request, message_id):
         message_to_send = MessageFromEmployee(user_from = message.user_to, user_to =message.user_from, message=content_message, user_number=message.user_number)
         message_to_send.save()
         account.save()
+        message.user_to.employment = False
+        message.user_to.save()
         message.delete()
         return redirect("posts:message")
 
@@ -60,6 +62,8 @@ def approve_close(request, message_id):
         message_to_send = MessageFromEmployee(user_from = message.user_to, user_to =message.user_from, message=content_message, user_number=message.user_number)
         message_to_send.save()
         account.delete()
+        message.user_to.employment = False
+        message.user_to.save()
         message.delete()
         return redirect("posts:message")
 
@@ -69,6 +73,8 @@ def approve_close(request, message_id):
 def reject(request, message_id):
     if request.method == "POST":
         message = get_object_or_404(MessageFromUser, id=message_id)
+        message.user_to.employment = False
+        message.user_to.save()
         message.delete()
         return redirect("posts:message")
     return redirect("posts:message")
@@ -84,6 +90,8 @@ def approve_change(request, message_id):
         message_to_send.save()
         account.delete()
         new_account.save()
+        message.user_to.employment = False
+        message.user_to.save()
         message.delete()
         return redirect("posts:message")
 

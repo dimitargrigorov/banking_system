@@ -20,10 +20,8 @@ class EmployeeCreationForm(UserCreationForm):
         model = Employee
         fields = ['username', 'email', 'egn', 'age','password1', 'password2']
 
-
+    
 class CreateEmployeeForm(forms.ModelForm):
     class Meta:
         model = CreateEmployee
         fields = ['employee', 'bank']
-
-
