@@ -3,10 +3,9 @@ from django.db import models
 from bank.models import Bank
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
     egn = models.CharField(max_length=10, blank=True, null=True)
     age = models.PositiveIntegerField(blank=True, null=True)
-    role = models.CharField(max_length= 20, default='Клиент')
+    role = models.CharField(max_length= 20, default='Клиент', blank=True)
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='customuser_groups',
@@ -20,9 +19,9 @@ class CustomUser(AbstractUser):
 
 class Employee(CustomUser):
     bank = models.ForeignKey(Bank, null=True, blank=True, on_delete=models.SET_NULL)
-    employment = models.BooleanField(default= False)
+    employment = models.BooleanField(default= False, blank=True)
 
 
 class CreateEmployee(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True, blank=True)
-    bank = models.ForeignKey(Bank, null=True, blank=True, on_delete=models.SET_NULL)
+    employee = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True, blank=False)
+    bank = models.ForeignKey(Bank, null=True, blank=False, on_delete=models.SET_NULL)

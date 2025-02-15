@@ -2,6 +2,7 @@ from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from posts import views
 
+
 class TestUrls(SimpleTestCase):
 
     def test_profile(self):
