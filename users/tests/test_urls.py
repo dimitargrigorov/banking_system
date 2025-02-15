@@ -20,9 +20,9 @@ class TestUrls(SimpleTestCase):
         url = reverse('users:logout')
         self.assertEqual(resolve(url).func, views.logout_view)
     
-     def test_choose_role(self):
-        url = reverse('users:choose_role')
-        self.assertEqual(resolve(url).func, views.choose_role)
+     def test_register(self):
+        url = reverse('users:register')
+        self.assertEqual(resolve(url).func, views.register)
     
      def test_register_third_person(self):
         url = reverse('users:register_third_person')

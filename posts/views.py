@@ -51,7 +51,10 @@ def approve_close(request, message_id):
         except Account.DoesNotExist:
             raise PermissionDenied('Опитвате се да изтриете невалиден акаунт')
         content_message = f'Успешно затвяряне на сметка, служител {message.user_to}.'
-        message_to_send = MessageFromEmployee(user_from = message.user_to, user_to =message.user_from, message=content_message, user_number=message.user_number)
+        message_to_send = MessageFromEmployee(
+            user_from = message.user_to, 
+            user_to =message.user_from, 
+            message=content_message)
         message_to_send.save()
         account.delete()
         message.user_to.employment = False
@@ -67,6 +70,13 @@ def reject(request, message_id):
         message = get_object_or_404(MessageFromUser, id=message_id)
         message.user_to.employment = False
         message.user_to.save()
+        content_message = f'Заявката не е одобрена от служител {message.user_to.username}'
+        message_to_send = MessageFromEmployee(
+            user_from = message.user_to, 
+            user_to =message.user_from, 
+            message=content_message
+            )
+        message_to_send.save()
         message.delete()
         return redirect('posts:message')
     return redirect('posts:message')

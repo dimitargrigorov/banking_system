@@ -87,7 +87,7 @@ def logout_view(request):
         return redirect('users:login')
     
 
-def choose_role(request):
+def register(request):
     if request.user.is_authenticated:
         return redirect('users:logout')
     if request.method == 'POST':
@@ -101,7 +101,7 @@ def choose_role(request):
         elif role == 'Трето лице':
             return redirect('users:register_third_person') 
     else:
-        return render(request, 'chose_role.html')
+        return render(request, 'register.html')
     
 def add_employee(request):
     if not request.user.is_authenticated or not request.user.is_superuser:

@@ -128,7 +128,9 @@ def redem_check(request):
                 check = Check.objects.get(reciever=reciever,uniq_code=uniq_code)
                 bank = check.bank
                 account = Account.objects.get(owner=reciever,bank=bank)
+                message = MessageFromThird.objects.get(user_to=reciever, uniq_code=uniq_code)
                 account.balance += check.value
+                message.delete()
                 account.save()
                 check.delete()
                 form.save()

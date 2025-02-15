@@ -39,8 +39,6 @@ class MessageFromThird(models.Model):
     message = models.CharField(max_length=300, blank=True, null=True)
     uniq_code = models.CharField(max_length=5, blank=True, null=True)
 
-
-
 class Redem(models.Model):
     reciever = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, blank=False,related_name="received_redemptions")
     uniq_code = models.CharField(max_length=5, blank=False, null=True)
