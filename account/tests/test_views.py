@@ -320,7 +320,7 @@ class TestCheckBalance(TestCase):
             user_number = 3414151512
         )
 
-    def test_send_baalnce_authenticated(self):
+    def test_check_baalnce_authenticated_ecist_account(self):
         self.client.login(username=self.user.username, password='password123')
         response = self.client.get(reverse('account:check_balance'),{
             'bank':self.bank.pk,

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import Post
 from account.models import MessageFromUser,MessageFromEmployee,Employee,CustomUser,Account,MessageFromThird
-
+from django.core.exceptions import PermissionDenied
 
 def profile(request):
     if not request.user.is_authenticated:
@@ -46,7 +46,10 @@ def approve_open(request, message_id):
 def approve_close(request, message_id):
     if request.method == 'POST':
         message = get_object_or_404(MessageFromUser, id=message_id)
-        account = Account.objects.get(user_number = message.user_number)
+        try:
+            account = Account.objects.get(user_number = message.user_number)
+        except Account.DoesNotExist:
+            raise PermissionDenied('Опитвате се да изтриете невалиден акаунт')
         content_message = f'Успешно затвяряне на сметка, служител {message.user_to}.'
         message_to_send = MessageFromEmployee(user_from = message.user_to, user_to =message.user_from, message=content_message, user_number=message.user_number)
         message_to_send.save()
@@ -85,6 +88,3 @@ def approve_change(request, message_id):
         return redirect('posts:message')
 
     return redirect('posts:message')
-
-    
-    

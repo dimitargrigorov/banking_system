@@ -27,7 +27,6 @@ def open_account(request):
                 employee.save()
             else:
                 form.add_error(None, f'Вече притежавате акаунт в {bank.bank_name}! ' )
-                raise AssertionError
 
     else:
         form = OpenForm()
