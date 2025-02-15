@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.test import TestCase, Client
 from users.models import CustomUser
 from bank.models import Bank,Change
-class TestViews(TestCase):
+class TestCreateBank(TestCase):
 
     def setUp(self):
         self.super_user = CustomUser.objects.create_superuser(
