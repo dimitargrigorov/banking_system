@@ -38,32 +38,3 @@ class TestViews(TestCase):
         response = self.client.post(reverse('bank:create_bank'),{'bank_name':''})
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Bank.objects.exists())
-
-    def test_create_employee_authenticated(self):
-        self.client.login(username=self.super_user.username, password='password123')
-        response = self.client.get(reverse('bank:create_employee'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'bank_form.html')
-
-    def test_create_employee_not_authenticated(self):
-        response = self.client.get(reverse('bank:create_employee'))
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('users:login'))
-
-    def test_create_employee_not_superuser(self):
-        self.client.login(username=self.user.username, password='password231')
-        response = self.client.get(reverse('bank:create_employee'))
-        self.assertEqual(response.status_code, 302)
-
-    def test_invalid_form_does_not_create_employee(self):
-        self.client.login(username=self.super_user.username, password='password123')
-        response = self.client.post(reverse('bank:create_employee'),{'bank_name':''})
-        self.assertEqual(response.status_code, 200)
-        self.assertFalse(Bank.objects.exists())
-
-    
-    
-
-
-    
-

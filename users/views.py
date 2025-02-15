@@ -82,16 +82,18 @@ def login_view(request):
 
 
 def logout_view(request):
-    if request.method == "POST": 
+    if request.method in ['POST', 'GET']:
         logout(request) 
-        return redirect("posts:welcome")
+        return redirect('users:login')
     
 
 def choose_role(request):
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        return redirect('users:logout')
+    if request.method == 'POST':
         role = request.POST.get('role')
-        if role in ["Клиент", "Служител", "Трето лице"]:
-            request.session["role"] = role
+        if role in ['Клиент', 'Служител', 'Трето лице']:
+            request.session['role'] = role
         if role == 'Клиент':
             return redirect('users:register_user')
         elif role == 'Служител':
@@ -102,13 +104,15 @@ def choose_role(request):
         return render(request, 'chose_role.html')
     
 def add_employee(request):
-    if request.method == "POST":
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect('users:login')
+    if request.method == 'POST':
         form = CreateEmployeeForm(request.POST)
         if form.is_valid():
             employee = form.cleaned_data['employee']
             employee.bank = form.cleaned_data['bank']
             employee.save()
-            return redirect("posts:message")
+            return redirect('posts:message')
     else:
         form = CreateEmployeeForm()
-    return render(request, "add_employee.html", {"form": form})
+    return render(request, 'add_employee.html', {"form": form})
