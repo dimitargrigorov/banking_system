@@ -133,8 +133,11 @@ def redem_check(request):
                 form.save()
             except Check.DoesNotExist:
                 form.add_error(None, 'Невалиден чек')
+                raise PermissionDenied
+
             except Account.DoesNotExist:
                 form.add_error(None, 'Акаунтът не е намерен.')
+                raise PermissionDenied
     else:
         form = RedemForm()
 
@@ -154,6 +157,7 @@ def check_balance(request):
                 balance = account.balance
             except Account.DoesNotExist:
                 form.add_error(None, 'Акаунтът не е намерен.')
+                raise PermissionDenied
     else:
         form = BalanceForm()
 
