@@ -4,6 +4,8 @@ from account.models import Account, MessageFromUser, MessageFromEmployee, Messag
 from users.models import CustomUser, Employee
 from bank.models import Bank
 from django.core.exceptions import PermissionDenied
+
+
 class TestOpenAccount(TestCase):
 
     def setUp(self):
